@@ -1,16 +1,23 @@
 package dto;
 
+import java.util.ArrayList;
+
 public class StoreDTO
 {
     private long id;
     private String name;
-    private ProductDTO[] items;
+    private String location;
 
-    public StoreDTO(int id, String name, ProductDTO... items)
+    public StoreDTO(long id, String name)
     {
         this.id = id;
         this.name = name;
-        this.items = items;
+    }
+    public StoreDTO(long id, String name, String location)
+    {
+        this.id = id;
+        this.name = name;
+        this.location = location;
     }
 
     public long getId()
@@ -33,13 +40,13 @@ public class StoreDTO
         this.name = name;
     }
 
-    public ProductDTO[] getItems()
+    public String getLocation()
     {
-        return items;
+        return location;
     }
 
-    public void setItems(ProductDTO[] items)
+    public void setLocation(String location)
     {
-        this.items = items;
+        this.location = location;
     }
 }

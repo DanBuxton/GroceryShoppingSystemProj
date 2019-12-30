@@ -6,18 +6,40 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <!--<title>Grocery Shopping System</title>-->
-        
-        <h:outputStylesheet name="/resources/css/main.css"/>
     </h:head>
     <h:body>
         <ui:composition template="/template.xhtml" >
             <ui:define name="content">
                 <h:form>
-                    <h2>Hello! <h:outputLabel value="${user.username}" /></h2>
+                    <h2>Hello, <h:outputLabel value="#{user.username}" /></h2>
+                    <h:commandButton immediate="true" action="customerDetails?faces-redirect=true" value="Update Details" />
                     
                     <section>
-                        <h3>Search Products</h3>
-                        <h:dataTable binding="${searchProducts.getStock()}" />
+                        <h3>Products</h3>
+                        <h:dataTable value="#{searchProducts.getSomeStock()}" var="stock">
+                            <h:column>
+                                <f:facet name="header">Id</f:facet>
+                                #{stock.id}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Store name</f:facet>
+                                #{stock.store.name}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Product</f:facet>
+                                #{stock.product.name}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Qty</f:facet>
+                                #{stock.qty}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Actions</f:facet>
+                                <h:commandLink action="#{searchProducts.vewProduct(stock.id)}" value="View" />
+                                <br />
+                                <h:commandLink action="#{cart.addStock(stock.id)}" value="Add to Cart" />
+                            </h:column>
+                        </h:dataTable>
                     </section>
                 </h:form>
             </ui:define>

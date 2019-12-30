@@ -3,18 +3,12 @@ package filter;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.*;
-//import javax.servlet.Filter;
-//import javax.servlet.FilterChain;
-//import javax.servlet.FilterConfig;
-//import javax.servlet.ServletException;
-//import javax.servlet.ServletRequest;
-//import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import managedbean.User;
+import managedbean.PersonBean;
 
 @WebFilter(filterName = "CheckLoggedIn", urlPatterns =
 {
@@ -26,7 +20,7 @@ public class CheckLoggedIn implements Filter
     private FilterConfig filterConfig = null;
 
     @Inject
-    User user;
+    PersonBean user;
 
     public CheckLoggedIn()
     {
@@ -47,7 +41,7 @@ public class CheckLoggedIn implements Filter
         boolean loginRequest = request.getRequestURI().equals(loginURI);
         boolean registerRequest = request.getRequestURI().equals(registerURI);
         boolean assetsRequest = request.getRequestURI().contains(assetsURI);
-        boolean rootRequest = request.getRequestURI().contains(rootURI);
+//        boolean rootRequest = request.getRequestURI().contains(rootURI);
 
         if (loggedIn || assetsRequest || loginRequest || registerRequest)
         {

@@ -18,36 +18,35 @@
                 <h:form>
                     <h2>Register</h2>
                     <h:panelGrid columns="2">
+                        <label>Id: </label>
+                        <h:outputLabel value="#{user.id}" />
+                        
                         <label for="txtForename">Forename: </label>
-                        <h:inputText id="txtForename" value="#{register.forename}">
+                        <h:inputText id="txtForename" value="#{user.userDetails.forename}">
                             <f:validateLength minimum="5" maximum="20" />
                             <f:validateRequired />
                         </h:inputText>
                         
                         <label for="txtSurname">Surname: </label>
-                        <h:inputText id="txtSurname" value="#{register.surname}">
+                        <h:inputText id="txtSurname" value="#{user.userDetails.surname}">
                             <f:validateLength minimum="5" maximum="20" />
                             <f:validateRequired />
                         </h:inputText>
                         
-                        <label for="txtUsername">Username: </label>
-                        <h:inputText id="txtUsername" value="#{register.username}" maxlength="20">
+                        <label>Username: </label>
+                        <h:outputLabel value="#{user.userDetails.username}" />
+                        
+                        <label>Password: </label>
+                        <h:outputLabel value="****" />
+                        
+                        <label for="txtAddress">Address </label>
+                        <h:inputText id="txtAddress" value="#{user.userDetails.address}" maxlength="20">
                             <f:validateLength minimum="5" maximum="50" />
                             <f:validateRequired />
                         </h:inputText>
                         
-                        <label for="txtPassword">Password: </label>
-                        <h:inputSecret id="txtPassword" value="#{register.password}">
-                            <f:validateRequired />
-                        </h:inputSecret>
-                        
-                        <label for="txtUsername">Username: </label>
-                        <h:inputText id="txtUsername" value="#{register.username}" maxlength="20">
-                            <f:validateLength minimum="5" maximum="50" />
-                            <f:validateRequired />
-                        </h:inputText>
-                        
-                        <h:commandButton value="Register" action="#{register.checkCredentials()}" />
+                        <h:commandButton value="Update" action="#{user.updateDetails()}" />
+                        <h:commandButton value="Change Password" action="changePassword?faces-redirect=true" />
                     </h:panelGrid>
                     <h:messages style="color: blue;" class="error" />
                 </h:form>

@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package userUI;
+package PersonUI;
 
 import manager.UserManager;
 
-import dto.UserDTO;
+import dto.PersonDTO;
 
 /**
  *
  * @author b018939i
  */
-public class RemoveUserCommand implements IUserCommand
+public class RemovePersonCommand implements ICommand
 {
     
     private final int id;
 
-    public RemoveUserCommand(int id)
+    public RemovePersonCommand(int id)
     {
         this.id = id;
     }
@@ -26,7 +26,7 @@ public class RemoveUserCommand implements IUserCommand
     @Override
     public Object execute()
     {
-        return new UserManager().removeUser(id);
+        return new UserManager().removeCustomer(id);
     }
     
 }

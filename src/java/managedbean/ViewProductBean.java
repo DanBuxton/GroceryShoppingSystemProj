@@ -5,31 +5,28 @@
  */
 package managedbean;
 
-import dto.StockDTO;
-import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import manager.StockManager;
 
 /**
  *
  * @author apple
  */
-@Named(value = "searchProducts")
+@Named(value = "view")
 @RequestScoped
-public class SearchProducts
+public class ViewProductBean
 {
 
     /**
-     * Creates a new instance of SearchProducts
+     * Creates a new instance of ViewProduct
      */
-    public SearchProducts()
+    public ViewProductBean()
     {
     }
     
-    public ArrayList<StockDTO> getStock()
+    public String view(long id)
     {
-        return StockManager.getStock();
+        
+        return "";
     }
-    
 }

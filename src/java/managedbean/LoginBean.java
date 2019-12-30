@@ -1,6 +1,6 @@
 package managedbean;
 
-import dto.UserDTO;
+import dto.PersonDTO;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.Base64;
@@ -9,20 +9,20 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import userUI.UserCommandFactory;
+import PersonUI.UserCommandFactory;
 
 @Named(value = "login")
 @RequestScoped
-public class Login
+public class LoginBean
 {
     
     @Inject
-    User user;
+    PersonBean user;
 
     private String username;
     private String password;
 
-    public Login()
+    public LoginBean()
     {
     }
 
@@ -55,7 +55,7 @@ public class Login
 
     public String checkCredentials()
     {
-        user.setCustomerDetails((UserDTO) UserCommandFactory.createCommand(UserCommandFactory.GET_USER_DETAILS, username, password).execute());
+        user.setCustomerDetails((PersonDTO) UserCommandFactory.createCommand(UserCommandFactory.GET_PERSON, username, password).execute());
         
 //        return user.checkCredentials();
 

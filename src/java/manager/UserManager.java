@@ -1,6 +1,6 @@
 package manager;
 
-import dto.UserDTO;
+import dto.PersonDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,18 +11,68 @@ import java.util.logging.Logger;
 
 public class UserManager
 {
-
-    public boolean insertUser(UserDTO user)
+    
+    private static int countCustomers()
+    {
+        int result = -1;
+        
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(person_id) FROM person WHERE is_admin = FALSE");)
+        {
+            ResultSet rs = stmt.executeQuery();
+            result =  rs.getInt("1");
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, "SQL EXCEPTION", ex);
+        }
+        
+        return result;
+    }
+    private static int countAdmins()
+    {
+        int result = -1;
+        
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(person_id) FROM person WHERE is_admin = TRUE");)
+        {
+            ResultSet rs = stmt.executeQuery();
+            result =  rs.getInt("1");
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, "SQL EXCEPTION", ex);
+        }
+        
+        return result;
+    }
+    private static int countUsers()
+    {
+        int result = -1;
+        
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(person_id) FROM person");)
+        {
+            ResultSet rs = stmt.executeQuery();
+            result =  rs.getInt("1");
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, "SQL EXCEPTION", ex);
+        }
+        
+        return result;
+    }
+    
+    public boolean insertCustomer(PersonDTO user)
     {
         boolean result = false;
 
-        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO PERSON (FORENAME, SURNAME, USERNAME, PASSWORD, is_admin) VALUES (?, ?, ?, ?, ?)"))
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO PERSON (FORENAME, SURNAME, USERNAME, PASSWORD, ADDRESS, IS_ADMIN) VALUES (?, ?, ?, ?, ?, ?)"))
         {
             stmt.setString(1, user.getForename());
             stmt.setString(2, user.getSurname());
             stmt.setString(3, user.getUsername());
             stmt.setString(4, user.getPassword());
-            stmt.setString(5, "false");
+            stmt.setString(5, user.getAddress());
+            stmt.setString(6, "false");
 
             result = stmt.executeUpdate() == 1;
         }
@@ -34,9 +84,9 @@ public class UserManager
         return result;
     }
 
-    public UserDTO getUser(int id)
+    public PersonDTO getCustomer(int id)
     {
-        UserDTO result = null;
+        PersonDTO result = null;
 
         try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PERSON WHERE ID = ?"))
         {
@@ -44,8 +94,8 @@ public class UserManager
 
             if (rs.next())
             {
-                result = new UserDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), rs.getString("USERNAME"), rs.getString("PASSWORD"), Boolean.parseBoolean(rs.getString("IS_ADMIN")));
-                result.setId(rs.getInt("id"));
+                result = new PersonDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("ADDRESS"), Boolean.parseBoolean(rs.getString("IS_ADMIN")));
+                result.setId(rs.getInt("PERSON_ID"));
             }
         }
         catch (SQLException e)
@@ -56,9 +106,9 @@ public class UserManager
         return result;
     }
 
-    public UserDTO getUser(String username, String password)
+    public PersonDTO getCustomer(String username, String password)
     {
-        UserDTO result = null;
+        PersonDTO result = null;
 
         try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PERSON WHERE USERNAME = ? AND PASSWORD = ?"))
         {
@@ -69,8 +119,8 @@ public class UserManager
 
             if (rs.next())
             {
-                result = new UserDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), username, password, rs.getBoolean("IS_ADMIN"));
-                result.setId(rs.getLong("id"));
+                result = new PersonDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), username, password, rs.getString("ADDRESS"), rs.getBoolean("IS_ADMIN"));
+                result.setId(rs.getLong("PERSON_ID"));
             }
         }
         catch (SQLException e)
@@ -81,35 +131,35 @@ public class UserManager
         return result;
     }
 
-    public ArrayList<UserDTO> getUsers()
+    public PersonDTO[] getCustomers()
     {
-        ArrayList<UserDTO> users = new ArrayList<>();
+        PersonDTO[] cust = new PersonDTO[countCustomers()];
 
-        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PERSON"))
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PERSON WHERE is_admin = FALSE"))
         {
             ResultSet rs = stmt.executeQuery();
-
-            while (rs.next())
+            
+            for (int i = 0; i < cust.length && rs.next(); i++)
             {
-                UserDTO u = new UserDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), rs.getString("USERNAME"), rs.getString("PASSWORD"), Boolean.parseBoolean(rs.getString("IS_ADMIN")));
-                u.setId(rs.getInt("id"));
-                users.add(u);
+                PersonDTO c = new PersonDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("ADDRESS"), Boolean.parseBoolean(rs.getString("IS_ADMIN")));
+                c.setId(rs.getInt("PERSON_ID"));
+                cust[i] = c;
             }
         }
         catch (Exception e)
         {
-            users = null;
+            cust = null;
             Logger.getLogger(UserManager.class.getName()).log(Level.WARNING, e.getMessage(), e);
         }
 
-        return users;
+        return cust;
     }
 
-    public boolean updateUser(UserDTO u)
+    public boolean updateCustomer(PersonDTO u)
     {
         boolean result = false;
 
-        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("UPDATE PERSON (FORENAME, SURNAME, USERNAME, PASSWORD, IS_ADNIN) VALUES (?, ?, ?, ?, ?) WHERE id = ?"))
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("UPDATE PERSON (FORENAME, SURNAME, USERNAME, PASSWORD, IS_ADNIN) VALUES (?, ?, ?, ?, ?) WHERE PERSON_ID = ?"))
         {
             stmt.setString(1, u.getForename());
             stmt.setString(2, u.getSurname());
@@ -128,11 +178,11 @@ public class UserManager
         return result;
     }
 
-    public boolean removeUser(int id)
+    public boolean removeCustomer(int id)
     {
         boolean result = false;
 
-        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE PERSON WHERE ID = ?"))
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE PERSON WHERE PERSON_ID = ?"))
         {
             stmt.setInt(1, id);
 
@@ -144,5 +194,53 @@ public class UserManager
         }
 
         return result;
+    }
+    
+    public PersonDTO[] getAdmins()
+    {
+        PersonDTO[] result = new PersonDTO[countAdmins()];
+        
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PERSON"))
+        {
+            ResultSet rs = stmt.executeQuery();
+            
+            for (int i = 0; i < result.length && rs.next(); i++)
+            {
+                PersonDTO u = new PersonDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("ADDRESS"), Boolean.parseBoolean(rs.getString("IS_ADMIN")));
+                u.setId(rs.getInt("PERSON_ID"));
+                result[i] = u;
+            }
+        }
+        catch (Exception e)
+        {
+            result = null;
+            Logger.getLogger(UserManager.class.getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        
+        return result;
+    }
+
+    public ArrayList<PersonDTO> getUsers()
+    {
+        ArrayList<PersonDTO> users = new ArrayList<>();
+
+        try (Connection conn = DbManager.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PERSON"))
+        {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                PersonDTO u = new PersonDTO(rs.getString("FORENAME"), rs.getString("SURNAME"), rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("ADDRESS"), Boolean.parseBoolean(rs.getString("IS_ADMIN")));
+                u.setId(rs.getInt("PERSON_ID"));
+                users.add(u);
+            }
+        }
+        catch (Exception e)
+        {
+            users = null;
+            Logger.getLogger(UserManager.class.getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+
+        return users;
     }
 }

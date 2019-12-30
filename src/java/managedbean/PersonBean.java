@@ -1,6 +1,6 @@
 package managedbean;
 
-import dto.UserDTO;
+import dto.PersonDTO;
 
 import java.io.Serializable;
 import javax.inject.Named;
@@ -8,31 +8,50 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-@Named(value = "user")
+@Named(value = "person")
 @SessionScoped
-public class User implements Serializable
+public class PersonBean implements Serializable
 {
 
-    private UserDTO userDetails = null;
+    private PersonDTO userDetails = null;
+
+    public PersonDTO getUserDetails()
+    {
+        return userDetails;
+    }
     private boolean credentialsOK = false;
 
-    public User()
+    public PersonBean()
     {
 
     }
 
-    public void setCustomerDetails(UserDTO userDetails)
+    public void setCustomerDetails(PersonDTO userDetails)
     {
         this.userDetails = userDetails;
-        
-        credentialsOK = true;
+
+        if (userDetails != null)
+        {
+            credentialsOK = true;
+        }
+        else
+        {
+            clearCredentials();
+        }
     }
 
     public String checkCredentials()
     {
         if (credentialsAreOK())
         {
-            return "index?faces-redirect=true";
+            if (!userDetails.isAnAdmin())
+            {
+                return "index?faces-redirect=true";
+            }
+            else
+            {
+                return "adminView?faces-redirect=true";
+            }
         }
         else
         {
@@ -41,6 +60,7 @@ public class User implements Serializable
             return null;
         }
     }
+
     private void clearCredentials()
     {
         userDetails = null;
@@ -65,6 +85,11 @@ public class User implements Serializable
     public String getPassword()
     {
         return userDetails.getPassword();
+    }
+    
+    public String getAddress()
+    {
+        return userDetails.getAddress();
     }
 
     public String logOff()

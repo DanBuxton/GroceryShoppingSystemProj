@@ -1,6 +1,6 @@
 package managedbean;
 
-import dto.UserDTO;
+import dto.PersonDTO;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,31 +11,22 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import userUI.UserCommandFactory;
+import PersonUI.UserCommandFactory;
 
 @Named(value = "register")
 @RequestScoped
-public class Register
+public class RegisterBean
 {
 
     private String forename;
     private String surname;
     private String username;
     private String password;
-
-    public String getForename()
-    {
-        return forename;
-    }
+    private String address;
 
     public void setForename(String forename)
     {
         this.forename = forename;
-    }
-
-    public String getSurname()
-    {
-        return surname;
     }
 
     public void setSurname(String surname)
@@ -43,19 +34,9 @@ public class Register
         this.surname = surname;
     }
 
-    public String getUsername()
-    {
-        return username;
-    }
-
     public void setUsername(String username)
     {
         this.username = username;
-    }
-
-    public String getPassword()
-    {
-        return password;
     }
 
     public void setPassword(String password)
@@ -67,21 +48,26 @@ public class Register
         catch (NoSuchAlgorithmException e)
         {
             this.password = "";
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(PersonBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
-    public Register()
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    public RegisterBean()
     {
     }
 
     public String checkCredentials()
     {
-        if (((UserDTO) UserCommandFactory.createCommand(UserCommandFactory.GET_USER_DETAILS, username, password).execute()) == null)
+        if (UserCommandFactory.createCommand(UserCommandFactory.GET_PERSON, username, password).execute() == null)
         {
-            if (((boolean) UserCommandFactory.createCommand(UserCommandFactory.ADD_USER, new UserDTO( forename, surname, username, password, false)).execute()))
+            if ((boolean) UserCommandFactory.createCommand(UserCommandFactory.ADD_PERSON, new PersonDTO( forename, surname, username, password, address, false)).execute())
             {
-                return "index?faces-redirect=true";
+                return "login?faces-redirect=true";
             }
             else
             {
