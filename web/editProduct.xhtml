@@ -19,22 +19,21 @@
                     <h:dataTable value="#{product.product}" var="p">
                         <h:column>
                             <f:facet name="header">Id</f:facet>
-                            <h:outputLabel value="#{p.id}" />
+                            <h:outputText value="#{p.id}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">Name</f:facet>
-                            <h:outputLabel value="#{p.name}" />
+                                #{p.name}
                         </h:column>
                         <h:column>
                             <f:facet name="header">Price</f:facet>
-                            <h:outputLabel value="#{p.price}">
-                                <f:convertNumber type="currency" />
-                            </h:outputLabel>
+                            £<h:inputText value="#{p.price}">
+                                <f:convertNumber type="number" />
+                            </h:inputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Actions</f:facet>
-                                <h:commandButton action="#{product.editProduct(p.id)}" value="Edit Product" rendered="#{person.userDetails.anAdmin}" />
-                                <h:commandButton action="#{product.removeProduct(p.id)}" value="Remove Product" rendered="#{person.userDetails.anAdmin}" />
+                            <h:commandButton action="#{product.updateProduct()}" value="Update" />
                         </h:column>
                     </h:dataTable>
                 </h:form>

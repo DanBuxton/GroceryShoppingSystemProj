@@ -11,12 +11,12 @@
         <ui:composition template="/template.xhtml" >
             <ui:define name="content">
                 <h:form>
-                    <h2>Hello, <h:outputLabel value="#{user.username}" /></h2>
+                    <h2>Hello, <h:outputLabel value="#{person.username}" /></h2>
                     <h:commandButton immediate="true" action="customerDetails?faces-redirect=true" value="Update Details" />
                     
                     <section>
                         <h3>Products</h3>
-                        <h:dataTable value="#{searchProducts.getSomeStock()}" var="stock">
+                        <h:dataTable value="#{stockBean.stocks}" var="stock">
                             <h:column>
                                 <f:facet name="header">Id</f:facet>
                                 #{stock.id}
@@ -30,14 +30,23 @@
                                 #{stock.product.name}
                             </h:column>
                             <h:column>
+                                <f:facet name="header">Price</f:facet>
+                                <h:outputLabel value="#{stock.product.price}">
+                                    <f:convertNumber type="currency" />
+                                </h:outputLabel>
+                            </h:column>
+                            <h:column>
                                 <f:facet name="header">Qty</f:facet>
                                 #{stock.qty}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Actions</f:facet>
-                                <h:commandLink action="#{searchProducts.vewProduct(stock.id)}" value="View" />
-                                <br />
-                                <h:commandLink action="#{cart.addStock(stock.id)}" value="Add to Cart" />
+                                <h:commandButton action="#{stockBean.viewStock(stock.product.id)}" value="View Stock" />
+                                <h:commandButton action="#{product.viewProduct(stock.product.id)}" value="View Product" rendered="#{person.userDetails.anAdmin}" />
+                                <h:commandButton action="#{stockBean.editStock(stock.id)}" value="Edit Stock" rendered="#{person.userDetails.anAdmin}" />
+                                <h:commandButton action="#{product.editProduct(stock.product.id)}" value="Edit Product" rendered="#{person.userDetails.anAdmin}" />
+                                <h:commandButton action="#{stockBean.removeStock(stock.id)}" value="Remove Stock" rendered="#{person.userDetails.anAdmin}" />
+                                <h:commandButton action="#{cart.addToCart(stock)}" value="Add to Cart" rendered="#{!person.userDetails.anAdmin}" />
                             </h:column>
                         </h:dataTable>
                     </section>

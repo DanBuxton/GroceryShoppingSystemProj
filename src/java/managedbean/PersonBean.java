@@ -13,11 +13,11 @@ import javax.faces.context.FacesContext;
 public class PersonBean implements Serializable
 {
 
-    private PersonDTO userDetails = null;
+    private PersonDTO personDetails = null;
 
     public PersonDTO getUserDetails()
     {
-        return userDetails;
+        return personDetails;
     }
     private boolean credentialsOK = false;
 
@@ -26,9 +26,9 @@ public class PersonBean implements Serializable
 
     }
 
-    public void setCustomerDetails(PersonDTO userDetails)
+    public void setPersonDetails(PersonDTO userDetails)
     {
-        this.userDetails = userDetails;
+        this.personDetails = userDetails;
 
         if (userDetails != null)
         {
@@ -39,12 +39,14 @@ public class PersonBean implements Serializable
             clearCredentials();
         }
     }
+    
+    
 
     public String checkCredentials()
     {
         if (credentialsAreOK())
         {
-            if (!userDetails.isAnAdmin())
+            if (!personDetails.isAnAdmin())
             {
                 return "index?faces-redirect=true";
             }
@@ -63,7 +65,7 @@ public class PersonBean implements Serializable
 
     private void clearCredentials()
     {
-        userDetails = null;
+        personDetails = null;
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
@@ -74,22 +76,22 @@ public class PersonBean implements Serializable
 
     public long getId()
     {
-        return userDetails.getId();
+        return personDetails.getId();
     }
 
     public String getUsername()
     {
-        return userDetails.getUsername();
+        return personDetails.getUsername();
     }
 
     public String getPassword()
     {
-        return userDetails.getPassword();
+        return personDetails.getPassword();
     }
     
     public String getAddress()
     {
-        return userDetails.getAddress();
+        return personDetails.getAddress();
     }
 
     public String logOff()
@@ -100,12 +102,12 @@ public class PersonBean implements Serializable
 
     public void setUsername(String username)
     {
-        userDetails.setUsername(username);
+        personDetails.setUsername(username);
     }
 
     public void setPassword(String password)
     {
-        userDetails.setUsername(password);
+        personDetails.setUsername(password);
     }
 
 }

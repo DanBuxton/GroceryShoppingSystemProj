@@ -38,13 +38,33 @@ public class PersonDTO implements Serializable
 
     /**
      * Create an instance of a Customer or Administrator. 
-     * @param forename 
-     * @param surname 
-     * @param username The user's unique password
+     * @param forename The user's forename. 
+     * @param surname The user's surname. 
+     * @param username The user's unique username. 
      * @param password The user's hashed password. 
+     * @param address The user's address for orders to be delivered. 
      * @param isAnAdmin Set {@code true} if person is an Administrator. Otherwise {@code false}. 
      */
     public PersonDTO(String forename, String surname, String username, String password, String address, boolean isAnAdmin)
+    {
+        this.forename = forename;
+        this.surname = surname;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        anAdmin = isAnAdmin;
+    }
+    /**
+     * Create an instance of a Customer or Administrator. 
+     * @param id The users id in the database. 
+     * @param forename The user's forename. 
+     * @param surname The user's surname. 
+     * @param username The user's unique username. 
+     * @param password The user's hashed password. 
+     * @param address The user's address for orders to be delivered. 
+     * @param isAnAdmin Set {@code true} if person is an Administrator. Otherwise {@code false}. 
+     */
+    public PersonDTO(long id, String forename, String surname, String username, String password, String address, boolean isAnAdmin)
     {
         this.forename = forename;
         this.surname = surname;
@@ -132,7 +152,7 @@ public class PersonDTO implements Serializable
     @Override
     public String toString()
     {
-        return id + ", " + getName() + ", " + username + ",\n" + 
+        return getName() + ", " + username + ",\n" + 
                 (isAnAdmin() ? "Administrator" : "Customer");
     }
 }

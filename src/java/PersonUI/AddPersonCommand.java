@@ -1,7 +1,7 @@
 package PersonUI;
 
 import dto.PersonDTO;
-import manager.UserManager;
+import manager.PersonManager;
 
 public class AddPersonCommand implements ICommand
 {
@@ -16,7 +16,7 @@ public class AddPersonCommand implements ICommand
     @Override
     public Object execute()
     {
-        return new UserManager().insertCustomer(user);
+        return new PersonManager().insertPerson(user);
     }
 
 }

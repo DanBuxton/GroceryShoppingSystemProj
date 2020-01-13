@@ -16,25 +16,26 @@
         <ui:composition template="/template.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <h:dataTable value="#{product.product}" var="p">
+                    <h:dataTable value="#{product.product}" var="stock">
                         <h:column>
                             <f:facet name="header">Id</f:facet>
-                            <h:outputLabel value="#{p.id}" />
+                                #{stock.id}
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Name</f:facet>
-                            <h:outputLabel value="#{p.name}" />
+                            <f:facet name="header">Store name</f:facet>
+                                #{stock.store.name}
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Price</f:facet>
-                            <h:outputLabel value="#{p.price}">
-                                <f:convertNumber type="currency" />
-                            </h:outputLabel>
+                            <f:facet name="header">Product</f:facet>
+                                #{stock.product.name}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Qty</f:facet>
+                                #{stock.qty}
                         </h:column>
                         <h:column>
                             <f:facet name="header">Actions</f:facet>
-                                <h:commandButton action="#{product.editProduct(p.id)}" value="Edit Product" rendered="#{person.userDetails.anAdmin}" />
-                                <h:commandButton action="#{product.removeProduct(p.id)}" value="Remove Product" rendered="#{person.userDetails.anAdmin}" />
+                            <h:commandButton action="#{cart.addToCart(stock)}" value="Add to Cart" />
                         </h:column>
                     </h:dataTable>
                 </h:form>

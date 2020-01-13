@@ -11,7 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import PersonUI.UserCommandFactory;
+import PersonUI.PersonCommandFactory;
 
 @Named(value = "register")
 @RequestScoped
@@ -23,6 +23,31 @@ public class RegisterBean
     private String username;
     private String password;
     private String address;
+
+    public String getForename()
+    {
+        return forename;
+    }
+
+    public String getSurname()
+    {
+        return surname;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
 
     public void setForename(String forename)
     {
@@ -63,9 +88,9 @@ public class RegisterBean
 
     public String checkCredentials()
     {
-        if (UserCommandFactory.createCommand(UserCommandFactory.GET_PERSON, username, password).execute() == null)
+        if (PersonCommandFactory.createCommand(PersonCommandFactory.GET_PERSON, username).execute() == null)
         {
-            if ((boolean) UserCommandFactory.createCommand(UserCommandFactory.ADD_PERSON, new PersonDTO( forename, surname, username, password, address, false)).execute())
+            if ((boolean) PersonCommandFactory.createCommand(PersonCommandFactory.ADD_PERSON, new PersonDTO( forename, surname, username, password, address, false)).execute())
             {
                 return "login?faces-redirect=true";
             }

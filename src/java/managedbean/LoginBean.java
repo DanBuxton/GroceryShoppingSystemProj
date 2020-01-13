@@ -9,7 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import PersonUI.UserCommandFactory;
+import PersonUI.PersonCommandFactory;
 
 @Named(value = "login")
 @RequestScoped
@@ -55,7 +55,7 @@ public class LoginBean
 
     public String checkCredentials()
     {
-        user.setCustomerDetails((PersonDTO) UserCommandFactory.createCommand(UserCommandFactory.GET_PERSON, username, password).execute());
+        user.setPersonDetails((PersonDTO) PersonCommandFactory.createCommand(PersonCommandFactory.GET_PERSON, username, password).execute());
         
 //        return user.checkCredentials();
 

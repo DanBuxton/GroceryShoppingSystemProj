@@ -5,33 +5,27 @@
  */
 package PersonUI;
 
+import dto.OrderDTO;
 import manager.OrderManager;
 
 /**
  *
  * @author apple
  */
-public class GetOrderDetailsCommand implements ICommand
+public class AddOrderCommand implements ICommand
 {
-
-    private int id;
     
-    public GetOrderDetailsCommand()
+    private final OrderDTO o;
+
+    public AddOrderCommand(OrderDTO o)
     {
-        id = Integer.MIN_VALUE;
+        this.o = o;
     }
 
     @Override
     public Object execute()
     {
-        if (id == Integer.MIN_VALUE)
-        {
-            return new OrderManager().getOrders();
-        }
-        else
-        {
-            return new OrderManager().getOrder(id);
-        }
+        return new OrderManager().addOrder(o);
     }
     
 }

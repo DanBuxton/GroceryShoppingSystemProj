@@ -5,6 +5,10 @@
  */
 package dto;
 
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
 /**
  *
  * @author apple
@@ -13,15 +17,28 @@ public class OrderDTO
 {
     private long id;
     private PersonDTO person;
-
-    public OrderDTO(PersonDTO person)
-    {
-        this.person = person;
-    }
-    public OrderDTO(long id, PersonDTO person)
+    private OrderItemDTO[] items;
+    private double price;
+    private GregorianCalendar dateOrdered;
+    
+    public OrderDTO(long id, PersonDTO person, OrderItemDTO... items)
     {
         this.id = id;
         this.person = person;
+        this.items = items;
+        dateOrdered = new GregorianCalendar(Locale.UK);
+    }
+    public OrderDTO(long id, PersonDTO person, ArrayList<CartItemDTO> items)
+    {
+        this.id = id;
+        this.person = person;
+        this.items = new OrderItemDTO[items.size()];
+        for (int i = 0; i < items.size(); i++)
+        {
+            this.items[i] = new OrderItemDTO(-1, items.get(i).getStock(), items.get(i).getQty());
+            price += items.get(i).getPrice();
+        }
+        dateOrdered = new GregorianCalendar(Locale.UK);
     }
 
     public long getId()
@@ -42,5 +59,35 @@ public class OrderDTO
     public void setPerson(PersonDTO person)
     {
         this.person = person;
+    }
+
+    public GregorianCalendar getDateOrdered()
+    {
+        return dateOrdered;
+    }
+
+    public void setDateOrdered(GregorianCalendar dateOrdered)
+    {
+        this.dateOrdered = dateOrdered;
+    }
+
+    public OrderItemDTO[] getItems()
+    {
+        return items;
+    }
+
+    public void setItems(OrderItemDTO[] items)
+    {
+        this.items = items;
+    }
+
+    public double getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice(double price)
+    {
+        this.price = price;
     }
 }

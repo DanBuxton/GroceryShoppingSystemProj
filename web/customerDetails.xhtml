@@ -19,33 +19,33 @@
                     <h2>Register</h2>
                     <h:panelGrid columns="2">
                         <label>Id: </label>
-                        <h:outputLabel value="#{user.id}" />
+                        <h:outputLabel value="#{person.userDetails.id}" />
                         
                         <label for="txtForename">Forename: </label>
-                        <h:inputText id="txtForename" value="#{user.userDetails.forename}">
+                        <h:inputText id="txtForename" value="#{person.userDetails.forename}">
                             <f:validateLength minimum="5" maximum="20" />
                             <f:validateRequired />
                         </h:inputText>
                         
                         <label for="txtSurname">Surname: </label>
-                        <h:inputText id="txtSurname" value="#{user.userDetails.surname}">
+                        <h:inputText id="txtSurname" value="#{person.userDetails.surname}">
                             <f:validateLength minimum="5" maximum="20" />
                             <f:validateRequired />
                         </h:inputText>
                         
                         <label>Username: </label>
-                        <h:outputLabel value="#{user.userDetails.username}" />
+                        <h:outputLabel value="#{person.userDetails.username}" />
                         
                         <label>Password: </label>
                         <h:outputLabel value="****" />
                         
                         <label for="txtAddress">Address </label>
-                        <h:inputText id="txtAddress" value="#{user.userDetails.address}" maxlength="20">
+                        <h:inputText id="txtAddress" value="#{person.userDetails.address}" maxlength="20">
                             <f:validateLength minimum="5" maximum="50" />
                             <f:validateRequired />
                         </h:inputText>
                         
-                        <h:commandButton value="Update" action="#{user.updateDetails()}" />
+                        <h:commandButton value="Update" action="#{person.updateDetails()}" />
                         <h:commandButton value="Change Password" action="changePassword?faces-redirect=true" />
                     </h:panelGrid>
                     <h:messages style="color: blue;" class="error" />

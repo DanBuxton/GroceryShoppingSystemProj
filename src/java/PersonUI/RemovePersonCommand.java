@@ -5,7 +5,7 @@
  */
 package PersonUI;
 
-import manager.UserManager;
+import manager.PersonManager;
 
 import dto.PersonDTO;
 
@@ -16,17 +16,21 @@ import dto.PersonDTO;
 public class RemovePersonCommand implements ICommand
 {
     
-    private final int id;
-
-    public RemovePersonCommand(int id)
+    private final long id;
+    
+    public RemovePersonCommand(long id)
     {
         this.id = id;
+    }
+    public RemovePersonCommand(PersonDTO p)
+    {
+        this.id = p.getId();
     }
 
     @Override
     public Object execute()
     {
-        return new UserManager().removeCustomer(id);
+        return new PersonManager().removeCustomer(id);
     }
     
 }

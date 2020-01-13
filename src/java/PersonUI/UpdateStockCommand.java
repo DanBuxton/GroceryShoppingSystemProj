@@ -5,28 +5,26 @@
  */
 package PersonUI;
 
-import dto.PersonDTO;
-import manager.OrderManager;
+import dto.StockDTO;
+import manager.StockManager;
 
 /**
  *
  * @author apple
  */
-public class GerOrderDetailsCommand implements ICommand
+public class UpdateStockCommand implements ICommand
 {
-    
-    private final PersonDTO p;
+    private final StockDTO s;
 
-    public GerOrderDetailsCommand(PersonDTO user)
+    public UpdateStockCommand(StockDTO s)
     {
-        p = user;
+        this.s = s;
     }
 
     @Override
     public Object execute()
     {
-//        return new OrderManager().getOrders()
-        return null;
+        return new StockManager().updateStock(s);
     }
     
 }

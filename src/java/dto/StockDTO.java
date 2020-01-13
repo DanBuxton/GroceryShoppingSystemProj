@@ -16,6 +16,14 @@ public class StockDTO
     private ProductDTO product;
     private int qty;
 
+    /**
+     * 
+     * @param store
+     * @param product
+     * @param qty 
+     * 
+     * @deprecated 
+     */
     public StockDTO(StoreDTO store, ProductDTO product, int qty)
     {
         this.store = store;

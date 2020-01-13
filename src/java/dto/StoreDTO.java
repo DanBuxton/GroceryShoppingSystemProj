@@ -1,18 +1,11 @@
 package dto;
 
-import java.util.ArrayList;
-
 public class StoreDTO
 {
     private long id;
     private String name;
     private String location;
 
-    public StoreDTO(long id, String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
     public StoreDTO(long id, String name, String location)
     {
         this.id = id;

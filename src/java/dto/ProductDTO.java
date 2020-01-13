@@ -33,6 +33,11 @@ public class ProductDTO
         this.name = name;
     }
 
+//    public String displayPrice()
+//    {
+//        return String.format("%.2f", price);
+//    }
+    
     public double getPrice()
     {
         return price;
